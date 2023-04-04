@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific - Calculator</title>
+
+    <!-- Bootstrap 5 cdn link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4/css/metro-all.min.css">
+
+    <!-- custom style css -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- custom javascript file -->
+    <script defer src="js/main.js" type="module"></script>
+</head>
+
+<body>
+    <div class="__main">
+        <div class="__calculator">
+            <div class="__display">
+                <div class="__input"><input type="text" name="input"></div>
+                <div class="__output">
+                    <div id="output_display"></div>
+                </div>
+            </div>
+            <div class="__degree">
+                <h5 class="m-0">DEG</h5>
+                <h5 class="m-0">F-E</h5>
+                <h5 class="m-0" style="position: absolute;left: 88%;"
+                    onclick="Metro.bottomsheet.toggle('#bottom-sheet', 'list')"><i class="fa fa-database"></i></h5>
+
+            </div>
+            <div class="__setting">
+                <h5 class="m-0" onclick="clearMemory()">MC</h5>
+                <h5 class="m-0" onclick="readMemory()">MR</h5>
+                <h5 class="m-0" onclick="addMemory()">M+</h5>
+                <h5 class="m-0" onclick="subMemory()">M-</h5>
+                <h5 class="m-0" onclick="memoryStore()">MS</h5>
+            </div>
+            <div class="__function">
+                <div class="_trigo">
+                    <div class="dropdown p-0">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Trigonometry
+                        </button>
+                        <div class="dropdown-menu p-0" style="width: 260px;">
+                            <div class="row p-2">
+                                <div class="col-3 p-0">
+                                    <div><button class="trigo_btn" id="trigo_2n">2nd</button></div>
+                                    <div><button class="trigo_btn" id="hyper">hyp</button></div>
+                                </div>
+                                <div class="col-9 p-0 child">
+                                    <div class="row" style="width: 95%;">
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="sin">sin</button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="cos">cos</button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="tan">tan</button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="sec">sec</button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="csc">csc</button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="cot">cot</button></div>
+                                    </div>
+                                    <div class="row hide" style="width: 95%;">
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="sin-1">sin<sup>-1</sup></button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="cos-1">cos<sup>-1</sup></button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="tan-1">tan<sup>-1</sup></button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="sec-1">sec<sup>-1</sup></button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="csc-1">csc<sup>-1</sup></button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="cot-1">cot<sup>-1</sup></button></div>
+                                    </div>
+                                    <div class="row hide" style="width: 95%;">
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="sinh">sinh</button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="cosh">cosh</button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="tanh">tanh</button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="sech">sech</button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="csch">csch</button></div>
+                                        <div class="col-4 p-0"><button class="trigo_btn" value="coth">coth</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="_func">
+                    <!-- TODO -->
+                    
+                </div>
+            </div>
+            
+            <div class="__keys">
+
+                <ul data-role="bottomsheet" class="bottom-sheet pos-absolute list-list list-style"
+                    style="width: 100%;height: 70%;padding: 10px 10px;" id="bottom-sheet">
+
+                </ul>
+                <!-- other functions  -->
+                <div id="extra_field" style="position: relative;z-index: 99;">
+                    <button value="yrootx"
+                        style="color: white; position: absolute;background-color: #3498DB;transition: 1s ease-in-out;opacity: 0;"><sup>y</sup><sub>&#x221A;x</sub></button>
+                    <button value="cube"
+                        style="color: white; position: absolute;background-color: #3498DB;transition: 1s ease-in-out;opacity: 0;">x<sup>3</sup></button>
+                    <button value="e^"
+                        style="color: white; position: absolute;background-color: #3498DB;transition: 1s ease-in-out;opacity: 0;">e<sup>2</sup></button>
+                    <button value="logxy"
+                        style="color: white; position: absolute;background-color: #3498DB;transition: 1s ease-in-out;opacity: 0;">log<sub>y</sub>x</button>
+                    <button value="cbrt"
+                        style="color: white; position: absolute;background-color: #3498DB;transition: 0.8s ease-in-out;opacity: 0;">&#x221B;x</button>
+                    <button value="2^"
+                        style="color: white; position: absolute;background-color: #3498DB;transition: 0.6s ease-in-out;opacity: 0;">2<sup>x</sup></button>
+                    <button style="position: absolute;" id="_2nd">2<sup>nd</sup></button>
+                </div>
+                <div><button value="3.141592653589793">&pi;</button></div>
+                <div><button value="2.718281828459045">e</button></div>
+                <div><button value="C">C</button></div>
+                <div><button value="DE"><i class="fa fa-delete-left"></i></button></div>
+                <div><button value="sqr">x&sup2;</button></div>
+                <div><button value="1/"><sup>1</sup>/<sub>x</sub></button></div>
+                <div><button value="abs">|x|</button></div>
+                <div><button value="exp">exp</button></div>
+                <div><button value="mod">mod</button></div>
+                <div><button value="sqroot">&#x221A;x</button></div>
+                <div><button value="(">(</button></div>
+                <div><button value=")">)</button></div>
+                <div><button value="fact">n!</button></div>
+                <div><button value="/">&#xf7;</button></div>
+                <div><button value="^">x<sup>y</sup></button></div>
+                <div><button value="7">7</button></div>
+                <div><button value="8">8</button></div>
+                <div><button value="9">9</button></div>
+                <div><button value="*">&#xd7;</button></div>
+                <div><button value="10^">10<sup>x</sup></button></div>
+                <div><button value="4">4</button></div>
+                <div><button value="5">5</button></div>
+                <div><button value="6">6</button></div>
+                <div><button value="-">-</button></div>
+                <div><button value="log10">log<sub>10</sub></button></div>
+                <div><button value="1">1</button></div>
+                <div><button value="2">2</button></div>
+                <div><button value="3">3</button></div>
+                <div><button value="+">+</button></div>
+                <div><button value="ln">ln</button></div>
+                <div><button value="+-">&#xb1;</button></div>
+                <div><button value="0">0</button></div>
+                <div><button value=".">.</button></div>
+                <div><button style="font-size: 12px;" value="=">=</button></div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap 5 JS script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.korzh.com/metroui/v4/js/metro.min.js"></script>
+</body>
+
+</html>
