@@ -9,6 +9,7 @@ class Calculator implements ICalc {
     bs : HTMLUListElement = document.getElementById('bottom-sheet') as HTMLUListElement
     flag: boolean = false
     factorial: boolean = false
+    equal:boolean = false
     constructor() {
         this.display = {
             input: ["0"],
@@ -74,19 +75,19 @@ class Calculator implements ICalc {
     // Logic for trigonometry all functions
     setTrigo(val: string) {
         // Normal trigono function
-        if (val === 'sin') {
+        if (val === 'sin' || val==="s") {
             this.display.input.unshift('sin(')
             this.display.input.push(')')
             this.display.operation.unshift('Math.sin(Math.PI/180*(')
             this.display.operation.push(')).toFixed()')
         }
-        if (val === 'cos') {
+        if (val === 'cos' || val==="c") {
             this.display.input.unshift('cos(')
             this.display.input.push(')')
             this.display.operation.unshift('Math.cos(Math.PI/180*(')
             this.display.operation.push(')).toFixed()')
         }
-        if (val === 'tan') {
+        if (val === 'tan' || val==='t') {
             this.display.input.unshift('tan(')
             this.display.input.push(')')
             this.display.operation.unshift('Math.tan(Math.PI/180*(')
@@ -204,7 +205,7 @@ class Calculator implements ICalc {
         // *************** Validation for operators ***************
         if (['+', '-', '*', '/', '.'].includes(val)) {
 
-            if (['+', '-', '*', '/', '.'].includes(this.display.input[this.display.input.length - 1])) {
+            if (['+', '-', '*', '/', '.',' mod '].includes(this.display.input[this.display.input.length - 1])) {
                 this.display.operation.pop()
                 this.display.input.pop()
                 this.display.input.push(val)
@@ -217,33 +218,45 @@ class Calculator implements ICalc {
         }
 
         // ************* Final Output ***************
-        if (val === "=") {
-
-            try {
-                this.output.innerHTML = eval(this.display.operation.join(''))
-                this.output.style.opacity = "1";
-                this.output.style.top = "0";
-            } catch (err) {
-                this.output.innerHTML = `<p style="color:red;">Syntax error!</p>`
-                this.output.style.opacity = "1";
-                this.output.style.top = "0";
+        if (val === "=" || val === 'Enter') {
+            
+            if(this.equal){
+                this.display.input = []
+                this.display.operation = []
+                this.display.input = [this.output.innerHTML]
+                this.display.operation = [this.output.innerHTML]
+                this.display.input.push('=')
+                this.equal = false
+            }
+            else{
+                try {
+                    this.output.innerHTML = eval(this.display.operation.join(''))
+                    this.output.style.opacity = "1";
+                    this.output.style.top = "0";
+                } catch (err) {
+                    this.output.innerHTML = `<p style="color:red;">Syntax error!</p>`
+                    this.output.style.opacity = "1";
+                    this.output.style.top = "0";
+                }
+                this.equal = true
+                this.display.input.push('=')
             }
 
         }
 
         // ************ Mod ***************
-        if (val === 'mod') {
-            if (this.display.input[this.display.input.length - 1] == " " + val + " ") {
+        if (val === 'mod' || val==='m') {
+            if (this.display.input[this.display.input.length - 1] == " " + "mod" + " ") {
                 return;
             }
             else {
-                this.display.input.push(" " + val + " ")
+                this.display.input.push(" " + "mod" + " ")
                 this.display.operation.push('%')
             }
         }
 
         // ************* Clear data *******************
-        if (val === 'C') {
+        if (val === 'C' || val==="Delete") {
             this._sbrac.style.display = 'none'
             this.display.input = ["0"]
             this.display.operation = ["0"]
@@ -253,7 +266,7 @@ class Calculator implements ICalc {
         }
 
         // ************* Remove/pop last *****************  /// TODO : BUG : for bracket
-        if (val === 'DE') {
+        if (val === 'DE' || val==='Backspace') {
             if (this.display.input.length == 1) {
                 this.display.input = ["0"]
                 this.display.operation = ["0"]
@@ -296,7 +309,7 @@ class Calculator implements ICalc {
         }
 
         // *********** ABS ********************
-        if (val === 'abs') {
+        if (val === 'abs' || val==='A') {
             this.display.input.unshift('abs(')
             this.display.input.push(')')
             this.display.operation.unshift('Math.abs(')
@@ -304,7 +317,7 @@ class Calculator implements ICalc {
         }
 
         // ************* Square root ******************
-        if (val === 'sqroot') {
+        if (val === 'sqroot' || val==="R") {
             this.display.input.unshift('√(')
             this.display.input.push(')')
             this.display.operation.unshift('Math.sqrt(')
@@ -312,7 +325,7 @@ class Calculator implements ICalc {
         }
 
         // **************** Log10 func ********************
-        if (val === 'log10') {
+        if (val === 'log10' || val==="L") {
             this.display.input.unshift('log(')
             this.display.input.push(')')
             this.display.operation.unshift('Math.log10(')
@@ -328,7 +341,7 @@ class Calculator implements ICalc {
         }
 
         // ************ Square of number **********
-        if (val === 'sqr') {
+        if (val === 'sqr' || val==="q") {
             this.display.input.unshift('sqr(')
             this.display.input.push(')')
             this.display.operation.unshift('(')
@@ -354,14 +367,14 @@ class Calculator implements ICalc {
         }
 
         // ********* EXPONENTIAL func **********
-        if (val === 'exp') {
+        if (val === 'exp' || val==="E") {
             let num = parseInt(this.display.input.join(''))
             let exp = num.toExponential()
             this.display.input = [exp]
         }
 
         // *********** PI and E constants ************
-        if (val === 'PI') {
+        if (val === 'PI' || val==="P") {
             if (['+', '*', '/', '-', ' mod '].includes(this.display.input[this.display.input.length - 1])) {
                 this.display.input.push(Math.PI.toString())
                 this.display.operation.push(Math.PI.toString())
@@ -422,13 +435,19 @@ class Calculator implements ICalc {
                 this._ebrac.setAttribute('disabled', "true")
                 this._sbrac.style.display = 'none'
             }
+            if(count==0){
+                return
+            }
+            if (['+', '*', '/', '-',' mod '].includes(this.display.input[this.display.input.length - 1])) {
+                return;
+            }
             this.display.input.push(')')
             this.display.operation.push(')')
             this._sbrac.innerHTML = String(--count);
         }
 
         // ********** Factorial func ***************
-        if (val === 'fact') {
+        if (val === 'fact' || val==='f') {
             if (this.factorial) {
                 let fact = 1;
                 input.value = ""
@@ -674,6 +693,13 @@ MR.onclick = function() {
     input.value = Calc.display.input.join('')
 }
 // console.log(Calc.display.input);
+window.onkeydown = function(e:KeyboardEvent){
+    var key = e.key;
+    Calc.setInput(key)
+    Calc.setTrigo(key)
+    input.value = Calc.display.input.join('')
+    
+}
 
 
 
