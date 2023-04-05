@@ -33,6 +33,37 @@ class Calculator implements ICalc{
     
     }
 
+    // Logic method for function dropdown
+    setFunc(val : string){
+        if(val === 'abs'){
+            this.display.input.unshift('abs(')
+            this.display.input.push(')')
+            this.display.operation.unshift('Math.abs(')
+            this.display.operation.push(')')
+        }
+        if(val === 'rand'){
+            if(this.display.input.length > 0){
+                this.display.input = []
+                this.display.operation = []
+            }
+            this.display.input.push(Math.random().toString())
+            this.display.operation.push(Math.random().toString())
+        }
+        if(val === 'ceil'){
+            this.display.input.unshift('ceil(')
+            this.display.input.push(')')
+            this.display.operation.unshift('Math.ceil(')
+            this.display.operation.push(')')
+        }
+        if(val === 'floor'){
+            this.display.input.unshift('floor(')
+            this.display.input.push(')')
+            this.display.operation.unshift('Math.floor(')
+            this.display.operation.push(')')
+        }
+    }
+
+    // Logic for trigonometry all functions
     setTrigo(val : string){
         // Normal trigono function
         if(val === 'sin'){
@@ -85,8 +116,71 @@ class Calculator implements ICalc{
             this.display.operation.unshift('Math.cosh(')
             this.display.operation.push(')')
         }
+        if(val === 'tanh'){
+            this.display.input.unshift('tanh(')
+            this.display.input.push(')')
+            this.display.operation.unshift('Math.tanh(')
+            this.display.operation.push(')')
+        }
+        if(val === 'sech'){
+            this.display.input.unshift('sech(')
+            this.display.input.push(')')
+            this.display.operation.unshift('1/(Math.cosh(')
+            this.display.operation.push('))')    
+        }
+        if(val === 'csch'){
+            this.display.input.unshift('csch(')
+            this.display.input.push(')')
+            this.display.operation.unshift('1/(Math.sinh(')
+            this.display.operation.push('))')    
+        }
+        if(val === 'coth'){
+            this.display.input.unshift('coth(')
+            this.display.input.push(')')
+            this.display.operation.unshift('1/(Math.tanh(')
+            this.display.operation.push('))')    
+        }
+
+        // trigonometry inverse
+        if(val === 'sin-1'){
+            this.display.input.unshift('sin-1(')
+            this.display.input.push(')')
+            this.display.operation.unshift('Math.asin(')
+            this.display.operation.push(')')
+        }
+        if(val === 'cos-1'){
+            this.display.input.unshift('cos-1(')
+            this.display.input.push(')')
+            this.display.operation.unshift('Math.acos(')
+            this.display.operation.push(')')
+        }
+        if(val === 'tan-1'){
+            this.display.input.unshift('tan-1(')
+            this.display.input.push(')')
+            this.display.operation.unshift('Math.atan(')
+            this.display.operation.push(')')
+        }
+        if(val === 'csc-1'){
+            this.display.input.unshift('csc-1(')
+            this.display.input.push(')')
+            this.display.operation.unshift('1/(Math.asin(')
+            this.display.operation.push('))')
+        }
+        if(val === 'sec-1'){
+            this.display.input.unshift('sec-1(')
+            this.display.input.push(')')
+            this.display.operation.unshift('1/(Math.acos(')
+            this.display.operation.push('))')
+        }
+        if(val === 'cot-1'){
+            this.display.input.unshift('cot-1(')
+            this.display.input.push(')')
+            this.display.operation.unshift('1/(Math.atan(')
+            this.display.operation.push('))')
+        }
     }
     
+    // logic for other functions
     setInput(val : string){
 
         // *************** Validation for numbers ****************
@@ -290,6 +384,8 @@ const toggle = document.getElementById('_2nd') as HTMLButtonElement
 // Getting which key is clicked by grouping of button using event listener
 var keys = document.getElementsByClassName('__keys')[0] as HTMLDivElement;
 
+var func = document.getElementById('func') as HTMLDivElement;
+
 // Target display screen to input the value
 var input = document.querySelector('[name="input"]') as HTMLInputElement;
 
@@ -298,6 +394,7 @@ var hyper = document.getElementById('hyper') as HTMLButtonElement;
 var child = document.getElementsByClassName('child')[0] as HTMLDivElement
 var toggleFlag : boolean = true
 var toggleFlag1 : boolean = true
+
 // Instance of Calculator Class
 const Calc = new Calculator()
 
@@ -343,6 +440,7 @@ input.value = Calc.display.input.join('')
 
 // Normal calculation
 Array.from(keys.children).slice(1).forEach((ele : any) => {
+    
     ele.children[0].onclick = function (e : PointerEvent) {
         let val = e.target as HTMLButtonElement
         // set Input
@@ -362,6 +460,17 @@ Array.from(child.children).forEach((ele : any) =>{
         }
         
     })
+    
+})
+
+// Function dropdown feature
+Array.from(func.children).forEach((ele : any)=>{
+    ele.children[0].onclick = function(e : PointerEvent){
+        e.stopPropagation()
+        let val = e.target as HTMLButtonElement;
+        Calc.setFunc(val.value)
+        input.value = Calc.display.input.join('')
+    }
     
 })
 
