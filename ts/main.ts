@@ -6,6 +6,7 @@ class Calculator implements ICalc {
     _sbrac: HTMLSpanElement = document.getElementById('_sbracket') as HTMLSpanElement;
     _ebrac: HTMLButtonElement = document.getElementById('_ebracket') as HTMLButtonElement;
     input = document.querySelector('[name="input"]') as HTMLInputElement;
+    bs : HTMLUListElement = document.getElementById('bottom-sheet') as HTMLUListElement
     flag: boolean = false
     factorial: boolean = false
     constructor() {
@@ -460,6 +461,85 @@ class Calculator implements ICalc {
 
     }
 
+    memoryStore() {
+
+        var ms;
+        if (localStorage.getItem('MS') == null) {
+            ms = []
+        }
+        else {
+            ms = JSON.parse(localStorage.getItem('MS') as string)
+        }
+    
+        ms.push(this.display.input.join(''))
+    
+        localStorage.setItem('MS', JSON.stringify(ms))
+        this.bs.innerHTML=''
+        this.showMemory()
+    }
+
+    showMemory() {
+
+        var ms;
+        if (localStorage.getItem('MS') == null) {
+            ms = []
+            this.bs.innerHTML = "There's no history!"
+        }
+        else {
+            ms = JSON.parse(localStorage.getItem('MS') as string)
+            ms.reverse().forEach((ele : string) => {
+                this.bs.innerHTML += `<li style="padding:4px 8px;display: block;background-color: #d1e6f3;border-radius: 6px;margin-bottom:2px">${ele}</li>`
+            })
+        }
+    
+    }
+
+    clearMemory() {
+        localStorage.removeItem('MS')
+        this.showMemory()
+    }
+
+    addMemory(){
+        var ms;
+        if (localStorage.getItem('MS') == null) {
+            ms = []
+        }
+        else {
+            ms = JSON.parse(localStorage.getItem('MS') as string)
+        }
+    
+        console.log();
+        ms[ms.length-1] = ms[ms.length-1] + Number(this.display.input.join(''))
+        localStorage.setItem('MS', JSON.stringify(ms))
+        this.bs.innerHTML=''
+        this.showMemory()
+        
+    }
+
+    subMemory(){
+        var ms;
+        if (localStorage.getItem('MS') == null) {
+            ms = []
+        }
+        else {
+            ms = JSON.parse(localStorage.getItem('MS') as string)
+        }
+        
+        ms[ms.length-1] = ms[ms.length-1] - Number(this.display.input.join(''))
+        localStorage.setItem('MS', JSON.stringify(ms))
+        this.bs.innerHTML=''
+        this.showMemory()
+        
+    }
+
+    readMemory() {
+        if (this.bs?.firstElementChild?.innerHTML) {
+    
+            this.display.input = this.bs.firstElementChild.innerHTML.split(',');
+            this.display.operation = this.bs.firstElementChild.innerHTML.split(',');
+        }
+    }
+
 
 
 }
@@ -478,6 +558,12 @@ var input = document.querySelector('[name="input"]') as HTMLInputElement;
 var trigo_2n = document.getElementById('trigo_2n') as HTMLButtonElement;
 var hyper = document.getElementById('hyper') as HTMLButtonElement;
 var child = document.getElementsByClassName('child')[0] as HTMLDivElement
+
+var MS = document.getElementById('MS') as HTMLHRElement;
+var MR = document.getElementById('MR') as HTMLHRElement;
+var MMinus = document.getElementById('M-') as HTMLHRElement;
+var MAdd = document.getElementById('M+') as HTMLHRElement;
+var MC = document.getElementById('MC') as HTMLHRElement;
 var toggleFlag: boolean = true
 var toggleFlag1: boolean = true
 
@@ -550,9 +636,9 @@ Array.from(child.children).forEach((ele: any) => {
             Calc.setTrigo(val.value)
             input.value = Calc.display.input.join('')
         }
-
+        
     })
-
+    
 })
 
 // Function dropdown feature
@@ -563,9 +649,30 @@ Array.from(func.children).forEach((ele: any) => {
         Calc.setFunc(val.value)
         input.value = Calc.display.input.join('')
     }
-
+    
 })
+MS.onclick = function() {
+    Calc.memoryStore()
+}
 
+Calc.showMemory()
+
+MC.onclick = function() {
+    Calc.clearMemory()
+}
+
+MAdd.onclick = function(){
+    Calc.addMemory()   
+}
+
+MMinus.onclick = function(){
+    Calc.subMemory()
+}
+
+MR.onclick = function() {
+    Calc.readMemory()
+    input.value = Calc.display.input.join('')
+}
 // console.log(Calc.display.input);
 
 
