@@ -265,6 +265,7 @@ class Calculator implements ICalc {
         // ************* Clear data *******************
         if (val === 'C' || val === "Delete") {
             this._sbrac.style.display = 'none'
+            this._ebrac.setAttribute("disabled","true")
             this.display.input = ["0"]
             this.display.operation = ["0"]
             this.output.innerHTML = ""
