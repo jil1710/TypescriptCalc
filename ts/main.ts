@@ -272,7 +272,7 @@ class Calculator implements ICalc {
             this.output.style.opacity = "0";
             this.output.style.top = "50px";
         }
-
+        
         // ************* Remove/pop last *****************  /// TODO : BUG : for bracket
         if (val === 'DE' || val === 'Backspace') {
             if (this.display.input.length == 1) {
