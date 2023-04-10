@@ -213,10 +213,11 @@ class Calculator {
         // ************* Final Output ***************
         if (val === "=" || val === 'Enter') {
             if (this.equal) {
-                this.display.input = [];
-                this.display.operation = [];
                 this.display.input = [this.output.innerHTML];
                 this.display.operation = [this.output.innerHTML];
+                // this.output.innerHTML = eval(this.display.operation.join(''))
+                // this.output.style.opacity = "1";
+                // this.output.style.top = "0";
                 this.equal = false;
             }
             else {
@@ -252,6 +253,7 @@ class Calculator {
             this.display.operation = ["0"];
             this.output.innerHTML = "0";
             this.output.style.opacity = "0";
+            this.equal = false;
             this.output.style.top = "50px";
         }
         // ************* Remove/pop last *****************  /// TODO : BUG : for bracket
